@@ -66,6 +66,11 @@
 | `news.general` | 通用新闻 | OkSurf、BBC、NPR、New York Times |
 | `news.crypto` | 加密新闻 | Cointelegraph、The Block、Decrypt、过滤后的 OkSurf |
 | `news.finance` | 财经新闻 | New York Times Business、NPR Business、OkSurf |
+| `weather.current` | 当前天气与短期预报 | Open-Meteo Geocoding、Open-Meteo Forecast |
+| `geo.lookup` | 坐标与地点查询 | Open-Meteo Geocoding |
+| `country.profile` | 国家基础资料与宏观指标 | RestCountries、Statistics of the World |
+| `currency.fx` | 汇率与简单换算 | ExchangeRate-API |
+| `search.instant` | 百科型知识快查 | Wikipedia Search、Wikipedia Summary |
 | `market.crypto` | 加密市场快照 | Coinpaprika、Coinlore、CoinRanking、Gate.io、Gemini、Blockchain |
 | `market.finance` | 个股与大盘上下文 | ValueRay、Stooq、PredScope、Statistics of the World、可选 OkSurf |
 
@@ -143,6 +148,10 @@ assets/registry.json + snapshots/
 python scripts/fetch_live_results.py --query "帮我抓最新加密新闻"
 python scripts/fetch_live_results.py --query "帮我看下最新加密行情"
 python scripts/fetch_live_results.py --query "帮我看下苹果最新美股数据"
+python scripts/fetch_live_results.py --query "帮我看下上海天气"
+python scripts/fetch_live_results.py --query "查一下北京坐标"
+python scripts/fetch_live_results.py --query "100 usd to cny"
+python scripts/fetch_live_results.py --query "比特币是什么"
 ```
 
 ### 查找免费 API / GraphQL 源
@@ -196,6 +205,42 @@ python scripts/refresh_index.py
 }
 ```
 
+### 天气直出
+
+```json
+{
+  "mode": "fetch",
+  "pool": "weather.current",
+  "coverage": {
+    "provider_count": 2
+  },
+  "results": [
+    {
+      "title": "上海 | 上海市 | 中国",
+      "summary": "晴 | 当前 24.1°C | 体感 24.6°C | 湿度 72% | 风速 11.4 km/h"
+    }
+  ]
+}
+```
+
+### 国家资料直出
+
+```json
+{
+  "mode": "fetch",
+  "pool": "country.profile",
+  "coverage": {
+    "provider_count": 2
+  },
+  "results": [
+    {
+      "title": "France",
+      "summary": "首都 Paris | 地区 Europe / Western Europe | 人口 68,373,433 | 面积 551,695 km²"
+    }
+  ]
+}
+```
+
 ## 目录结构
 
 ```text
@@ -242,6 +287,7 @@ free-api-discovery/
 - 本地优先的 API 路由层
 - 免费 / 公共源发现工具
 - 轻量资讯聚合器
+- 生活与知识类直查入口
 - REST + GraphQL 混合检索入口
 - 面向中文用户的资讯抓取 skill
 

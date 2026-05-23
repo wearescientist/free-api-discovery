@@ -14,6 +14,11 @@ Use this skill when the user gives a natural-language request and wants one of t
    - crypto market snapshot
    - finance market snapshot
    - a specific stock or coin readout
+   - weather and short forecast
+   - geocoding and coordinate lookup
+   - country profile and basic open data
+   - exchange rates and currency conversion
+   - quick knowledge lookup
 2. API discovery fallback:
    - free API shortlist
    - GraphQL endpoint discovery
@@ -72,6 +77,16 @@ Current direct-result source pools:
   - uses multiple public crypto news feeds plus filtered `OkSurf` business and technology headlines when relevant
 - `news.finance`
   - aggregates business-oriented public feeds plus `OkSurf` business headlines when relevant
+- `weather.current`
+  - uses `Open-Meteo` geocoding and forecast APIs
+- `geo.lookup`
+  - uses `Open-Meteo` geocoding for coordinate and place lookup
+- `country.profile`
+  - combines `RestCountries` with `Statistics of the World` where relevant
+- `currency.fx`
+  - uses `ExchangeRate-API` for exchange rates and simple conversions
+- `search.instant`
+  - uses `Wikipedia` search plus page summaries
 - `market.crypto`
   - aggregates `Coinpaprika`, `Coinlore`, `CoinRanking`, `Gate.io`, `Gemini`, and `Blockchain` where applicable
 - `market.finance`
@@ -101,6 +116,14 @@ For news pools, the output keeps the original source fields and adds a more read
   - source, provider, and section summary
 
 This means news queries should no longer look like `title + url only` unless the upstream feed itself is extremely sparse.
+
+## Expanded Examples
+
+- `show me the weather in Shanghai`
+- `look up Tokyo coordinates`
+- `show USD to CNY exchange rates`
+- `give me France population and capital`
+- `search what Bitcoin is`
 
 ## Discovery-Only Utilities
 

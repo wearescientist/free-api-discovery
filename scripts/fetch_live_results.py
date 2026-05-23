@@ -46,12 +46,24 @@ VALUERAY_SYMBOL_DATA_URL = "https://www.valueray.com/api/v1/symbolData"
 PREDSCOPE_MARKETS_URL = "https://predscope.com/api/markets.json"
 STATS_WORLD_COUNTRY_URL = "https://statisticsoftheworld.com/api/v1/countries"
 STOOQ_SYMBOL_URL = "https://stooq.com/q/l/"
+OPENMETEO_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
+OPENMETEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+RESTCOUNTRIES_NAME_URL = "https://restcountries.com/v3.1/name"
+RESTCOUNTRIES_ALPHA_URL = "https://restcountries.com/v3.1/alpha"
+EXCHANGE_RATE_URL = "https://open.er-api.com/v6/latest"
+WIKIPEDIA_SEARCH_URL = "https://en.wikipedia.org/w/rest.php/v1/search/title"
+WIKIPEDIA_ZH_SEARCH_URL = "https://zh.wikipedia.org/w/rest.php/v1/search/title"
+WIKIPEDIA_SUMMARY_URL = "https://en.wikipedia.org/api/rest_v1/page/summary"
+WIKIPEDIA_ZH_SUMMARY_URL = "https://zh.wikipedia.org/api/rest_v1/page/summary"
 GOOGLE_TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single"
 TRANSLATE_TEXT_LIMIT = 900
 
 GENERIC_QUERY_TERMS = {
     "api",
     "apis",
+    "capital",
+    "country",
+    "currency",
     "news",
     "latest",
     "today",
@@ -71,6 +83,13 @@ GENERIC_QUERY_TERMS = {
     "headlines",
     "headline",
     "data",
+    "weather",
+    "search",
+    "rate",
+    "rates",
+    "city",
+    "location",
+    "population",
 }
 
 COIN_ALIASES = {
@@ -178,17 +197,88 @@ COUNTRY_ALIASES = {
     "\u7f8e\u56fd": "USA",
     "china": "CHN",
     "\u4e2d\u56fd": "CHN",
+    "france": "FRA",
+    "\u6cd5\u56fd": "FRA",
+    "germany": "DEU",
+    "\u5fb7\u56fd": "DEU",
     "japan": "JPN",
     "\u65e5\u672c": "JPN",
+    "russia": "RUS",
+    "\u4fc4\u7f57\u65af": "RUS",
     "uk": "GBR",
     "united kingdom": "GBR",
     "britain": "GBR",
     "\u82f1\u56fd": "GBR",
+    "canada": "CAN",
+    "\u52a0\u62ff\u5927": "CAN",
+    "australia": "AUS",
+    "\u6fb3\u5927\u5229\u4e9a": "AUS",
+    "singapore": "SGP",
+    "\u65b0\u52a0\u5761": "SGP",
+    "south korea": "KOR",
+    "korea": "KOR",
+    "\u97e9\u56fd": "KOR",
     "eu": "EMU",
     "eurozone": "EMU",
     "\u6b27\u5143\u533a": "EMU",
     "india": "IND",
     "\u5370\u5ea6": "IND",
+    "italy": "ITA",
+    "\u610f\u5927\u5229": "ITA",
+    "spain": "ESP",
+    "\u897f\u73ed\u7259": "ESP",
+    "brazil": "BRA",
+    "\u5df4\u897f": "BRA",
+    "mexico": "MEX",
+    "\u58a8\u897f\u54e5": "MEX",
+    "netherlands": "NLD",
+    "holland": "NLD",
+    "\u8377\u5170": "NLD",
+    "switzerland": "CHE",
+    "\u745e\u58eb": "CHE",
+    "sweden": "SWE",
+    "\u745e\u5178": "SWE",
+    "norway": "NOR",
+    "\u632a\u5a01": "NOR",
+    "denmark": "DNK",
+    "\u4e39\u9ea6": "DNK",
+    "finland": "FIN",
+    "\u82ac\u5170": "FIN",
+    "belgium": "BEL",
+    "\u6bd4\u5229\u65f6": "BEL",
+    "austria": "AUT",
+    "\u5965\u5730\u5229": "AUT",
+    "poland": "POL",
+    "\u6ce2\u5170": "POL",
+    "ukraine": "UKR",
+    "\u4e4c\u514b\u5170": "UKR",
+    "turkey": "TUR",
+    "turkiye": "TUR",
+    "\u571f\u8033\u5176": "TUR",
+    "saudi arabia": "SAU",
+    "\u6c99\u7279": "SAU",
+    "\u6c99\u7279\u963f\u62c9\u4f2f": "SAU",
+    "uae": "ARE",
+    "united arab emirates": "ARE",
+    "\u963f\u8054\u914b": "ARE",
+    "\u963f\u62c9\u4f2f\u8054\u5408\u914b\u957f\u56fd": "ARE",
+    "indonesia": "IDN",
+    "\u5370\u5c3c": "IDN",
+    "\u5370\u5ea6\u5c3c\u897f\u4e9a": "IDN",
+    "thailand": "THA",
+    "\u6cf0\u56fd": "THA",
+    "vietnam": "VNM",
+    "\u8d8a\u5357": "VNM",
+    "malaysia": "MYS",
+    "\u9a6c\u6765\u897f\u4e9a": "MYS",
+    "philippines": "PHL",
+    "\u83f2\u5f8b\u5bbe": "PHL",
+    "new zealand": "NZL",
+    "\u65b0\u897f\u5170": "NZL",
+    "argentina": "ARG",
+    "\u963f\u6839\u5ef7": "ARG",
+    "south africa": "ZAF",
+    "\u5357\u975e": "ZAF",
 }
 
 MACRO_HINTS = {
@@ -199,6 +289,105 @@ MACRO_HINTS = {
     "rate": ["rate", "yield", "interest", "\u5229\u7387", "\u6536\u76ca\u7387"],
     "debt": ["debt", "\u503a\u52a1"],
     "stock": ["stock", "stocks", "\u80a1\u5e02", "\u80a1\u7968", "\u7f8e\u80a1"],
+}
+
+CURRENCY_ALIASES = {
+    "usd": "USD",
+    "dollar": "USD",
+    "dollars": "USD",
+    "美元": "USD",
+    "美金": "USD",
+    "cny": "CNY",
+    "rmb": "CNY",
+    "renminbi": "CNY",
+    "yuan": "CNY",
+    "人民币": "CNY",
+    "欧元": "EUR",
+    "eur": "EUR",
+    "euro": "EUR",
+    "日元": "JPY",
+    "jpy": "JPY",
+    "yen": "JPY",
+    "英镑": "GBP",
+    "gbp": "GBP",
+    "pound": "GBP",
+    "港币": "HKD",
+    "hkd": "HKD",
+    "cad": "CAD",
+    "加元": "CAD",
+    "aud": "AUD",
+    "澳元": "AUD",
+    "sgd": "SGD",
+    "新元": "SGD",
+    "新加坡元": "SGD",
+}
+
+DEFAULT_FX_TARGETS = {
+    "USD": ["CNY", "EUR", "JPY", "GBP"],
+    "CNY": ["USD", "EUR", "JPY", "HKD"],
+    "EUR": ["USD", "CNY", "JPY", "GBP"],
+    "JPY": ["USD", "CNY", "EUR", "GBP"],
+    "GBP": ["USD", "CNY", "EUR", "JPY"],
+}
+
+COUNTRY_PROFILE_HINTS = [
+    "population",
+    "capital",
+    "area",
+    "language",
+    "languages",
+    "timezone",
+    "currency",
+    "currencies",
+    "flag",
+    "region",
+    "country",
+    "country profile",
+    "gdp",
+    "inflation",
+    "unemployment",
+    "人口",
+    "首都",
+    "面积",
+    "语言",
+    "时区",
+    "货币",
+    "国旗",
+    "地区",
+    "国家信息",
+    "国家数据",
+    "国家资料",
+    "经济",
+    "国内生产总值",
+]
+
+WEATHER_CODE_LABELS = {
+    0: "晴",
+    1: "基本晴",
+    2: "局部多云",
+    3: "阴",
+    45: "雾",
+    48: "冻雾",
+    51: "小毛毛雨",
+    53: "毛毛雨",
+    55: "强毛毛雨",
+    61: "小雨",
+    63: "中雨",
+    65: "大雨",
+    66: "冻雨",
+    67: "强冻雨",
+    71: "小雪",
+    73: "中雪",
+    75: "大雪",
+    77: "雪粒",
+    80: "阵雨",
+    81: "强阵雨",
+    82: "暴雨",
+    85: "阵雪",
+    86: "强阵雪",
+    95: "雷暴",
+    96: "雷暴夹小冰雹",
+    99: "强雷暴夹大冰雹",
 }
 
 
@@ -349,6 +538,15 @@ def format_percent(value: Any) -> str:
     return f"{sign}{number:.2f}%"
 
 
+def format_number(value: Any) -> str:
+    number = to_float(value)
+    if number is None:
+        return "N/A"
+    if abs(number - int(number)) < 1e-9:
+        return f"{int(number):,}"
+    return f"{number:,.2f}"
+
+
 def average(values: list[float | None]) -> float | None:
     valid = [value for value in values if value is not None]
     if not valid:
@@ -372,6 +570,272 @@ def build_result(kind: str, title: str, summary: str, source: str, provider: str
     if extra:
         payload.update(extra)
     return payload
+
+
+def weather_code_label(value: Any) -> str:
+    code = int(value) if value is not None else None
+    if code is None:
+        return "未知"
+    return WEATHER_CODE_LABELS.get(code, f"天气码 {code}")
+
+
+def strip_noise_phrases(text: str, phrases: list[str]) -> str:
+    result = str(text or "")
+    for phrase in phrases:
+        result = re.sub(re.escape(phrase), " ", result, flags=re.IGNORECASE)
+    result = re.sub(r"[，,。！？?;；:：()（）\[\]{}]+", " ", result)
+    return re.sub(r"\s+", " ", result).strip(" -")
+
+
+def extract_first_number(text: str) -> float | None:
+    match = re.search(r"(?<![A-Za-z])(\d+(?:\.\d+)?)", str(text or ""))
+    return float(match.group(1)) if match else None
+
+
+def normalize_location_candidate(text: str) -> str:
+    candidate = strip_noise_phrases(
+        text,
+        [
+            "帮我",
+            "给我",
+            "看下",
+            "看看",
+            "查一下",
+            "查下",
+            "告诉我",
+            "show me",
+            "tell me",
+            "look up",
+            "lookup",
+            "where is",
+            "locate",
+            "coordinates for",
+            "coordinates of",
+            "weather in",
+            "weather for",
+            "forecast in",
+            "forecast for",
+        ],
+    )
+    candidate = re.sub(
+        r"\b(?:weather|forecast|temperature|rain|climate|location|coordinates?|geocode|where|is|in|for|at)\b",
+        " ",
+        candidate,
+        flags=re.IGNORECASE,
+    )
+    candidate = re.sub(r"(?:天气预报|天气|气温|降雨|经纬度|坐标|位置|在哪里|在哪)", " ", candidate)
+    return re.sub(r"\s+", " ", candidate).strip(" -")
+
+
+def extract_location_hint(query: str) -> str:
+    text = str(query or "").strip()
+    patterns = [
+        r"(?:weather|forecast|temperature|rain|climate)\s+(?:in|for|at)\s+(.+)$",
+        r"(?:where is|locate|coordinates? for|coordinates? of|geocode|look up|lookup)\s+(.+?)(?:\s+coordinates?)?$",
+        r"(.+?)(?:天气预报|天气|气温|降雨|经纬度|坐标|在哪里|在哪|位置)$",
+        r"(?:查|查下|查一下|看下|看看|帮我查下|帮我看下|告诉我)?\s*(.+?)(?:的)?(?:天气预报|天气|气温|降雨|经纬度|坐标|位置|在哪里|在哪)$",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            candidate = normalize_location_candidate(match.group(1))
+            if candidate:
+                return candidate
+    cleaned = normalize_location_candidate(text)
+    cleaned = re.sub(r"\b(?:latest|current|today|now)\b", " ", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"(?:最新|现在|当前|今日|今天)", " ", cleaned)
+    return re.sub(r"\s+", " ", cleaned).strip(" -")
+
+
+def extract_search_hint(query: str) -> str:
+    text = str(query or "").strip()
+    patterns = [
+        r"(?:search|lookup|look up|wiki(?:pedia)?|百科|搜索|检索|查一下|介绍一下|科普)\s+(?:what is|who is)?\s*(.+)$",
+        r"(?:what is|who is)\s+(.+)$",
+        r"(.+?)(?:是什么|是谁|是啥)$",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            candidate = strip_noise_phrases(
+                match.group(1),
+                [
+                    "帮我",
+                    "给我",
+                    "看下",
+                    "看看",
+                    "查一下",
+                    "查下",
+                    "搜索",
+                    "检索",
+                    "百科",
+                    "介绍一下",
+                    "科普",
+                    "what is",
+                    "who is",
+                    "search",
+                    "lookup",
+                    "look up",
+                    "wiki",
+                    "wikipedia",
+                ],
+            )
+            candidate = re.sub(r"^\b(?:what|who)\b\s*", "", candidate, flags=re.IGNORECASE)
+            candidate = re.sub(r"\s+\b(?:is|are)\b$", "", candidate, flags=re.IGNORECASE)
+            if candidate:
+                return candidate
+    cleaned = strip_noise_phrases(
+        text,
+        [
+            "帮我",
+            "给我",
+            "看下",
+            "看看",
+            "查一下",
+            "查下",
+            "搜索",
+            "检索",
+            "百科",
+            "介绍一下",
+            "科普",
+            "what is",
+            "who is",
+            "search",
+            "lookup",
+            "look up",
+            "wiki",
+            "wikipedia",
+            "latest",
+            "最新",
+        ],
+    )
+    cleaned = re.sub(r"^\b(?:what|who)\b\s*", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s+\b(?:is|are)\b$", "", cleaned, flags=re.IGNORECASE)
+    return cleaned
+
+
+def normalize_country_candidate(text: str) -> str:
+    candidate = strip_noise_phrases(
+        text,
+        [
+            "帮我",
+            "给我",
+            "看下",
+            "看看",
+            "查一下",
+            "查下",
+            "告诉我",
+            "show me",
+            "give me",
+            "tell me",
+            "look up",
+            "lookup",
+            "search",
+            "country profile",
+            "country data",
+            "country info",
+            "country information",
+            "国家信息",
+            "国家数据",
+            "国家资料",
+        ],
+    )
+    candidate = re.sub(
+        r"\b(?:population|capital|area|language|languages|timezone|currency|currencies|flag|region|gdp|inflation|unemployment|country|profile|info|information|data|stats)\b",
+        " ",
+        candidate,
+        flags=re.IGNORECASE,
+    )
+    candidate = re.sub(r"\b(?:and|of|for|the)\b", " ", candidate, flags=re.IGNORECASE)
+    candidate = re.sub(
+        r"(?:的人口|的首都|的面积|的语言|的时区|的货币|的国旗|的地区|的GDP|的gdp|的通胀|的失业率)",
+        " ",
+        candidate,
+    )
+    candidate = re.sub(
+        r"(?:人口|首都|面积|语言|时区|货币|国旗|地区|国家|信息|数据|资料|GDP|gdp|通胀|失业率|以及|还有|与|和)",
+        " ",
+        candidate,
+    )
+    return re.sub(r"\s+", " ", candidate).strip(" -")
+
+
+def extract_country_lookup(query: str) -> tuple[str | None, str | None]:
+    code = detect_country_code(query)
+    if code:
+        return code, None
+    text = str(query or "").strip()
+    patterns = [
+        r"(.+?)(?:的人口|的首都|的面积|的语言|的时区|的货币|的国旗|的地区|人口|首都|面积|语言|时区|货币|国旗|地区|国家信息|国家数据|国家资料|GDP|gdp|通胀|失业率)(?:和(?:人口|首都|面积|语言|时区|货币|国旗|地区|GDP|gdp|通胀|失业率))*$",
+        r"(?:country|country profile|country data|country info|population of|capital of|area of|currency of|gdp of)\s+(.+)$",
+        r"(.+?)\s+(?:population|capital|area|language|languages|timezone|currency|currencies|flag|region|gdp|inflation|unemployment)(?:\s+(?:and|with)\s+(?:population|capital|area|language|languages|timezone|currency|currencies|flag|region|gdp|inflation|unemployment))*$",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            candidate = normalize_country_candidate(match.group(1))
+            if candidate:
+                normalized_code = detect_country_code(candidate)
+                if normalized_code:
+                    return normalized_code, None
+                return None, candidate
+    cleaned = normalize_country_candidate(text)
+    normalized_code = detect_country_code(cleaned)
+    if normalized_code:
+        return normalized_code, None
+    return (None, cleaned or None)
+
+
+def extract_currency_request(query: str) -> tuple[str, list[str], float | None]:
+    lowered = str(query or "").lower()
+    hits: list[tuple[int, str]] = []
+    for alias, code in CURRENCY_ALIASES.items():
+        for match in re.finditer(re.escape(alias.lower()), lowered):
+            hits.append((match.start(), code))
+    hits.sort(key=lambda item: item[0])
+    ordered_codes: list[str] = []
+    for _, code in hits:
+        if code not in ordered_codes:
+            ordered_codes.append(code)
+
+    amount = extract_first_number(query)
+    if len(ordered_codes) >= 2:
+        base = ordered_codes[0]
+        targets = ordered_codes[1:4]
+    elif len(ordered_codes) == 1:
+        base = ordered_codes[0]
+        targets = [code for code in DEFAULT_FX_TARGETS.get(base, ["USD", "CNY", "EUR", "JPY"]) if code != base][:3]
+    else:
+        base = "USD"
+        targets = ["CNY", "EUR", "JPY"]
+    return base, targets, amount
+
+
+def count_currency_mentions(query: str) -> int:
+    lowered = str(query or "").lower()
+    hits: list[str] = []
+    for alias, code in CURRENCY_ALIASES.items():
+        if contains_alias(lowered, alias) and code not in hits:
+            hits.append(code)
+    return len(hits)
+
+
+def looks_like_currency_request(query: str) -> bool:
+    lowered = str(query or "").lower()
+    if count_currency_mentions(query) >= 2:
+        return True
+    return any(
+        contains_alias(lowered, term)
+        for term in ["exchange rate", "fx", "forex", "convert", "conversion", "currency", "currencies", "汇率", "兑换", "换汇", "折算", "兑"]
+    )
+
+
+def looks_like_search_query(query: str) -> bool:
+    text = str(query or "")
+    lowered = text.lower()
+    if re.search(r"\b(?:what is|who is)\b", lowered):
+        return True
+    return any(token in text for token in ["是什么", "是谁", "是啥", "介绍一下", "科普"])
 
 
 def pool_coverage(attempted: list[str], succeeded: list[str], failed: list[dict[str, str]]) -> dict[str, Any]:
@@ -444,6 +908,9 @@ def extract_stock_symbol(query: str) -> str | None:
 
 
 def detect_country_code(query: str) -> str | None:
+    raw_text = str(query or "").strip()
+    if re.fullmatch(r"[A-Za-z]{3}", raw_text):
+        return raw_text.upper()
     lowered = query.lower()
     for alias, code in COUNTRY_ALIASES.items():
         if contains_alias(lowered, alias):
@@ -1108,6 +1575,284 @@ def fetch_statsworld_country(query: str, top: int) -> list[dict[str, Any]]:
     return rows
 
 
+def geocode_location(name: str, count: int = 3, language: str = "zh") -> list[dict[str, Any]]:
+    params = urllib.parse.urlencode({"name": name, "count": count, "language": language, "format": "json"})
+    payload = read_json(f"{OPENMETEO_GEOCODING_URL}?{params}")
+    return payload.get("results") or []
+
+
+def fetch_geocoding_pool(query: str, top: int) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    location = extract_location_hint(query) or query
+    matches = geocode_location(location, count=max(1, min(top, 5)))
+    results = []
+    for match in matches[:top]:
+        name = str(match.get("name") or location)
+        country = str(match.get("country") or "")
+        admin1 = str(match.get("admin1") or "")
+        title = " | ".join(part for part in [name, admin1, country] if part)
+        results.append(
+            build_result(
+                kind="geo-place",
+                title=title or name,
+                summary=(
+                    f"纬度 {match.get('latitude')} | 经度 {match.get('longitude')} | "
+                    f"时区 {match.get('timezone') or 'N/A'} | 人口 {format_number(match.get('population'))}"
+                ),
+                source="Open-Meteo Geocoding",
+                provider="Open-Meteo Geocoding",
+                url=f"{OPENMETEO_GEOCODING_URL}?{urllib.parse.urlencode({'name': location, 'count': 1, 'language': 'zh', 'format': 'json'})}",
+                extra={
+                    "location_name": name,
+                    "country": country or None,
+                    "admin1": admin1 or None,
+                    "latitude": match.get("latitude"),
+                    "longitude": match.get("longitude"),
+                    "timezone": match.get("timezone"),
+                },
+            )
+        )
+    coverage = pool_coverage(["Open-Meteo Geocoding"], ["Open-Meteo Geocoding"] if results else [], [] if results else [{"provider": "Open-Meteo Geocoding", "error": "empty"}])
+    return results, coverage
+
+
+def fetch_weather_pool(query: str, top: int) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    location = extract_location_hint(query) or "Shanghai"
+    matches = geocode_location(location, count=1)
+    if not matches:
+        return [], pool_coverage(["Open-Meteo Geocoding", "Open-Meteo Weather"], [], [{"provider": "Open-Meteo Geocoding", "error": "empty"}])
+    match = matches[0]
+    params = urllib.parse.urlencode(
+        {
+            "latitude": match.get("latitude"),
+            "longitude": match.get("longitude"),
+            "timezone": "auto",
+            "forecast_days": max(3, min(top + 1, 5)),
+            "current": "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m",
+            "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+        }
+    )
+    payload = read_json(f"{OPENMETEO_FORECAST_URL}?{params}")
+    current = payload.get("current") or {}
+    daily = payload.get("daily") or {}
+    location_title = " | ".join(part for part in [str(match.get("name") or location), str(match.get("admin1") or ""), str(match.get("country") or "")] if part)
+    results = [
+        build_result(
+            kind="weather-current",
+            title=location_title or str(match.get("name") or location),
+            summary=(
+                f"{weather_code_label(current.get('weather_code'))} | "
+                f"当前 {current.get('temperature_2m')}°C | 体感 {current.get('apparent_temperature')}°C | "
+                f"湿度 {current.get('relative_humidity_2m')}% | 风速 {current.get('wind_speed_10m')} km/h"
+            ),
+            source="Open-Meteo Weather",
+            provider="Open-Meteo Weather",
+            url=f"{OPENMETEO_FORECAST_URL}?{params}",
+            extra={
+                "location_name": match.get("name"),
+                "latitude": match.get("latitude"),
+                "longitude": match.get("longitude"),
+                "timezone": payload.get("timezone"),
+                "current": current,
+            },
+        )
+    ]
+    daily_dates = daily.get("time") or []
+    max_values = daily.get("temperature_2m_max") or []
+    min_values = daily.get("temperature_2m_min") or []
+    rain_values = daily.get("precipitation_probability_max") or []
+    code_values = daily.get("weather_code") or []
+    for index, date_value in enumerate(daily_dates[: max(0, top - 1)]):
+        results.append(
+            build_result(
+                kind="weather-forecast",
+                title=f"{location_title} | {date_value}",
+                summary=(
+                    f"{weather_code_label(code_values[index] if index < len(code_values) else None)} | "
+                    f"最高 {max_values[index] if index < len(max_values) else 'N/A'}°C | "
+                    f"最低 {min_values[index] if index < len(min_values) else 'N/A'}°C | "
+                    f"降水概率 {rain_values[index] if index < len(rain_values) else 'N/A'}%"
+                ),
+                source="Open-Meteo Weather",
+                provider="Open-Meteo Weather",
+                url=f"{OPENMETEO_FORECAST_URL}?{params}",
+                extra={"date": date_value},
+            )
+        )
+    coverage = pool_coverage(["Open-Meteo Geocoding", "Open-Meteo Weather"], ["Open-Meteo Geocoding", "Open-Meteo Weather"], [])
+    return results[:top], coverage
+
+
+def fetch_currency_pool(query: str, top: int) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    base, targets, amount = extract_currency_request(query)
+    payload = read_json(f"{EXCHANGE_RATE_URL}/{base}")
+    rates = payload.get("rates") or {}
+    if not rates:
+        return [], pool_coverage(["ExchangeRate-API"], [], [{"provider": "ExchangeRate-API", "error": "empty"}])
+    results = []
+    for target in targets[:top]:
+        rate = rates.get(target)
+        if rate is None:
+            continue
+        conversion = f"{amount:g} {base} ≈ {amount * rate:,.2f} {target}" if amount is not None else None
+        summary = f"1 {base} = {rate:,.4f} {target}"
+        if conversion:
+            summary += f" | {conversion}"
+        results.append(
+            build_result(
+                kind="fx-rate",
+                title=f"{base}/{target}",
+                summary=summary,
+                source="ExchangeRate-API",
+                provider="ExchangeRate-API",
+                url=f"{EXCHANGE_RATE_URL}/{base}",
+                extra={
+                    "base": base,
+                    "target": target,
+                    "rate": rate,
+                    "amount": amount,
+                },
+            )
+        )
+    coverage = pool_coverage(["ExchangeRate-API"], ["ExchangeRate-API"] if results else [], [] if results else [{"provider": "ExchangeRate-API", "error": "empty"}])
+    return results, coverage
+
+
+def fetch_restcountries_country(code: str | None, name: str | None) -> dict[str, Any] | None:
+    fields = "name,capital,region,subregion,population,area,currencies,languages,timezones,maps,flags,cca3"
+    if not code and name:
+        code = detect_country_code(name)
+    request_urls: list[str] = []
+    if code:
+        request_urls.append(f"{RESTCOUNTRIES_ALPHA_URL}/{code}?fields={fields}")
+    if name:
+        request_urls.append(f"{RESTCOUNTRIES_NAME_URL}/{urllib.parse.quote(name)}?fields={fields}")
+    if not request_urls:
+        return None
+    for url in request_urls:
+        try:
+            payload = read_json(url)
+        except Exception:
+            continue
+        if isinstance(payload, list):
+            if payload:
+                return payload[0]
+            continue
+        if payload:
+            return payload
+    return None
+
+
+def fetch_country_profile_pool(query: str, top: int) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    code, name = extract_country_lookup(query)
+    country_payload = fetch_restcountries_country(code, name)
+    if not country_payload:
+        return [], pool_coverage(["RestCountries", "Statistics of the World"], [], [{"provider": "RestCountries", "error": "empty"}])
+    common_name = (((country_payload.get("name") or {}).get("common")) or name or code or "Country")
+    native_title = common_name
+    capitals = country_payload.get("capital") or []
+    currencies = country_payload.get("currencies") or {}
+    languages = country_payload.get("languages") or {}
+    timezones = country_payload.get("timezones") or []
+    currency_text = ", ".join(f"{code_key} {details.get('name')}" for code_key, details in list(currencies.items())[:3]) or "N/A"
+    language_text = ", ".join(list(languages.values())[:3]) or "N/A"
+    results = [
+        build_result(
+            kind="country-profile",
+            title=str(native_title),
+            summary=(
+                f"首都 {', '.join(capitals) if capitals else 'N/A'} | "
+                f"地区 {country_payload.get('region') or 'N/A'} / {country_payload.get('subregion') or 'N/A'} | "
+                f"人口 {format_number(country_payload.get('population'))} | 面积 {format_number(country_payload.get('area'))} km²"
+            ),
+            source="RestCountries",
+            provider="RestCountries",
+            url=str(((country_payload.get("maps") or {}).get("googleMaps")) or ((country_payload.get("maps") or {}).get("openStreetMaps")) or f"{RESTCOUNTRIES_ALPHA_URL}/{code or ''}"),
+            extra={
+                "capital": capitals,
+                "region": country_payload.get("region"),
+                "subregion": country_payload.get("subregion"),
+                "population": country_payload.get("population"),
+                "area": country_payload.get("area"),
+                "currencies": currencies,
+                "currency_text": currency_text,
+                "languages": languages,
+                "language_text": language_text,
+                "timezones": timezones,
+                "flag": ((country_payload.get("flags") or {}).get("png")) or ((country_payload.get("flags") or {}).get("svg")),
+            },
+        )
+    ]
+    results.append(
+        build_result(
+            kind="country-meta",
+            title=f"{native_title} | 基础信息",
+            summary=f"货币 {currency_text} | 语言 {language_text} | 时区 {', '.join(timezones[:2]) if timezones else 'N/A'}",
+            source="RestCountries",
+            provider="RestCountries",
+            url=str(((country_payload.get("maps") or {}).get("googleMaps")) or ((country_payload.get("maps") or {}).get("openStreetMaps")) or f"{RESTCOUNTRIES_ALPHA_URL}/{code or ''}"),
+        )
+    )
+    stats_rows: list[dict[str, Any]] = []
+    stats_success = False
+    try:
+        stats_query = str(country_payload.get("cca3") or code or common_name)
+        stats_rows = fetch_statsworld_country(stats_query, max(1, top - len(results)))
+        stats_success = bool(stats_rows)
+    except Exception:
+        stats_rows = []
+    results.extend(stats_rows)
+    succeeded = ["RestCountries"]
+    failed: list[dict[str, str]] = []
+    if stats_success:
+        succeeded.append("Statistics of the World")
+    else:
+        failed.append({"provider": "Statistics of the World", "error": "empty"})
+    return results[:top], pool_coverage(["RestCountries", "Statistics of the World"], succeeded, failed)
+
+
+def fetch_search_pool(query: str, top: int) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    term = extract_search_hint(query) or query
+    use_zh = contains_cjk(term)
+    search_url = WIKIPEDIA_ZH_SEARCH_URL if use_zh else WIKIPEDIA_SEARCH_URL
+    summary_url = WIKIPEDIA_ZH_SUMMARY_URL if use_zh else WIKIPEDIA_SUMMARY_URL
+    params = urllib.parse.urlencode({"q": term, "limit": max(3, top)})
+    payload = read_json(f"{search_url}?{params}")
+    pages = payload.get("pages") or []
+    if not pages:
+        return [], pool_coverage(["Wikipedia"], [], [{"provider": "Wikipedia", "error": "empty"}])
+    results = []
+    for page in pages[:top]:
+        title_text = str(page.get("title") or page.get("key") or term)
+        page_key = str(page.get("key") or title_text)
+        url = f"https://{'zh' if use_zh else 'en'}.wikipedia.org/wiki/{urllib.parse.quote(page_key.replace(' ', '_'))}"
+        summary_payload = None
+        summary_text = str(page.get("description") or page.get("excerpt") or "").strip()
+        try:
+            summary_payload = read_json(f"{summary_url}/{urllib.parse.quote(page_key)}")
+            summary_text = str(summary_payload.get("extract") or summary_text).strip()
+        except Exception:
+            summary_payload = None
+        title_zh = title_text if use_zh else translate_text_to_zh(title_text)
+        summary_zh = summary_text if use_zh else translate_text_to_zh(summary_text)
+        results.append(
+            build_result(
+                kind="knowledge",
+                title=title_zh or title_text,
+                summary=summary_zh or title_zh or title_text,
+                source="Wikipedia",
+                provider="Wikipedia",
+                url=url or f"{summary_url}/{urllib.parse.quote(title_text)}",
+                extra={
+                    "title_original": title_text,
+                    "summary_original": summary_text or None,
+                    "summary_zh": summary_zh or None,
+                    "thumbnail": (summary_payload or {}).get("thumbnail", {}).get("source") if summary_payload else None,
+                },
+            )
+        )
+    return results, pool_coverage(["Wikipedia"], ["Wikipedia"], [])
+
+
 def fetch_finance_context_news(query: str, intent: dict[str, Any], top: int) -> list[dict[str, Any]]:
     symbol = extract_stock_symbol(query)
     alias = SYMBOL_DISPLAY_NAMES.get(symbol or "", symbol or "")
@@ -1220,6 +1965,25 @@ def fetch_finance_news_pool(query: str, intent: dict[str, Any], top: int) -> tup
 
 def choose_pool(query: str, intent: dict[str, Any]) -> str:
     domains = intent.get("domains") or []
+    lowered = query.lower()
+    if "Weather" in domains:
+        return "weather.current"
+    if "Geocoding" in domains:
+        return "geo.lookup"
+    if looks_like_search_query(query):
+        return "search.instant"
+    if looks_like_currency_request(query):
+        return "currency.fx"
+    if "Currency Exchange" in domains:
+        return "currency.fx"
+    if "Search" in domains and not any(domain in domains for domain in {"News", "Finance", "Cryptocurrency"}):
+        return "search.instant"
+    if (
+        "Open Data" in domains
+        or any(contains_alias(lowered, term) for term in COUNTRY_PROFILE_HINTS)
+        or detect_country_code(query)
+    ) and not any(domain in domains for domain in {"Cryptocurrency"}):
+        return "country.profile"
     if intent.get("result_kind") == "news":
         if "Cryptocurrency" in domains:
             return "news.crypto"
@@ -1239,6 +2003,21 @@ def choose_pool(query: str, intent: dict[str, Any]) -> str:
 
 def fetch_direct_results(query: str, intent: dict[str, Any], top: int) -> tuple[str, list[dict[str, Any]], dict[str, Any]]:
     pool_key = choose_pool(query, intent)
+    if pool_key == "weather.current":
+        results, coverage = fetch_weather_pool(query, top)
+        return pool_key, results, coverage
+    if pool_key == "geo.lookup":
+        results, coverage = fetch_geocoding_pool(query, top)
+        return pool_key, results, coverage
+    if pool_key == "currency.fx":
+        results, coverage = fetch_currency_pool(query, top)
+        return pool_key, results, coverage
+    if pool_key == "country.profile":
+        results, coverage = fetch_country_profile_pool(query, top)
+        return pool_key, results, coverage
+    if pool_key == "search.instant":
+        results, coverage = fetch_search_pool(query, top)
+        return pool_key, results, coverage
     if pool_key == "news.crypto":
         results, coverage = fetch_crypto_news_pool(query, intent, top)
         return pool_key, results, coverage
