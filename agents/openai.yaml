@@ -1,0 +1,7 @@
+interface:
+  display_name: "Free API Discovery"
+  short_description: "Route natural-language requests to live results or free API discovery."
+  default_prompt: "Use $free-api-discovery to either fetch live results or discover free APIs from a natural-language request."
+
+policy:
+  allow_implicit_invocation: true
