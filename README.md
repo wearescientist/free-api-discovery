@@ -8,58 +8,35 @@
 [![Multi Source](https://img.shields.io/badge/Multi--Source-Aggregation-6C47FF)](#)
 [![Chinese News](https://img.shields.io/badge/News-%E4%B8%AD%E6%96%87%E5%8F%AF%E8%AF%BB-FF6B35)](#)
 
-## 这是什么
+## 核心优势
 
-`Free API Discovery` 不是一个单纯的 API 清单，也不是把几百个仓库条目硬塞进上下文的提示词包。
+`Free API Discovery` 的重点不是“让 AI 知道更多 API 名字”，而是把搜索和抓取变成一个稳定、低成本、可复用的工具层。
 
-它更像一个轻量的“数据路由器”与“免费源发现器”：
-
-- 你说人话，它先判断你是要**结果**还是要**源**
-- 要结果，就走多源抓取池
-- 要源，就查本地索引并返回 API shortlist
-- 尽量本地优先，避免把大目录反复塞进模型上下文
+- **稳定**：固定走本地索引、固定路由规则、固定输出结构，适合反复调用。
+- **省 token**：几百个 API 目录保存在本地，查询时只把少量候选或结果交给模型。
+- **可自动化**：适合接入定时任务、日报、监控、内容发布和 agent 工作流。
 
 一句话说透：
 
-> **它把“找免费 API”和“直接拿结果”这两件事，收进了同一个自然语言入口。**
+> **直接问 AI 适合临时回答；这个 skill 适合高频、稳定、省 token 地查数据和找 API。**
 
-## 它解决什么问题
+## 两类功能
 
-公开 API 目录其实很多，但真要用时常常有几个痛点：
+### 1. 直接抓取数据
 
-- 目录很大，不适合每次整包进上下文
-- REST、GraphQL、RSS、市场源的格式完全不统一
-- 用户有时要的是“给我结果”，有时要的是“给我源”，很多系统分不清
-- 就算抓到了新闻，也常常只剩标题和链接，不像成品
+当用户要的是“结果”时，skill 会自动进入抓取池，直接返回结构化数据，而不是先给一堆 API 名字。
 
-这个 skill 的目标就是把这些断层补上。
-
-## 核心能力
-
-### 1. 自然语言意图识别
-
-它不会只靠几个死关键词，而是尝试识别整句意图。
-
-例如：
+典型请求：
 
 - `帮我抓最新新闻`
 - `帮我抓最新加密新闻`
 - `帮我看下最新加密行情`
 - `帮我看下苹果最新美股数据`
-- `找几个免费的GraphQL市场数据API`
-- `给我免 key 的财经资讯源`
+- `帮我看下上海天气`
+- `100 usd to cny`
+- `比特币是什么`
 
-系统会先判断：
-
-- 这是 `fetch` 还是 `discover`
-- 更像 `news`、`market`、`finance`、`crypto` 还是 `graphql`
-- 是否偏向 `latest / real-time / no key / GraphQL`
-
-### 2. 直接结果模式
-
-如果用户要的是结果，skill 会自动进入抓取池，而不是先丢给你一堆 API 名字。
-
-当前已接好的结果池：
+当前已接好的直抓池：
 
 | 池名 | 作用 | 当前来源 |
 | --- | --- | --- |
@@ -74,31 +51,25 @@
 | `market.crypto` | 加密市场快照 | Coinpaprika、Coinlore、CoinRanking、Gate.io、Gemini、Blockchain |
 | `market.finance` | 个股与大盘上下文 | ValueRay、Stooq、PredScope、Statistics of the World、可选 OkSurf |
 
-### 3. 发现模式
+新闻类输出会尽量给出中文标题、中文摘要、原始标题、来源链接和 `coverage`，方便判断这次到底覆盖了几个源。
 
-如果用户问的是“有哪些免费 API 可用”，就会退回本地索引层。
+### 2. 提供 API 检索
 
-比如：
+当用户要的是“源”时，skill 会查询本地 API 索引，返回免费 API / GraphQL endpoint shortlist。
 
-- 免费 API shortlist
-- GraphQL 端点发现
-- 免 key 源筛选
-- 分类列表查询
+典型请求：
 
-### 4. 中文可读新闻输出
+- `找几个免费的GraphQL市场数据API`
+- `给我免 key 的财经资讯源`
+- `找 free crypto api with no key`
+- `列一下可用分类`
 
-这版不是只给 `title + url`。
+索引数据来自：
 
-新闻输出现在会尽量带上：
+- `public-api-lists/public-api-lists`
+- `APIs-guru/graphql-apis`
 
-- 中文标题
-- 原始标题
-- 中文摘要
-- 原始预览
-- 中文预览
-- 来源 / 抓取源 / 分区信息
-
-也就是说，它已经更接近“中文资讯流”，而不是半成品抓取器。
+它会按分类、auth、GraphQL 标记、no-key 偏好、关键词相关度做筛选，避免把完整大目录塞进上下文。
 
 ## 整体结构
 
